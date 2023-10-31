@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Payment Gateway Integration Service</title>
+    <style>
+      /* Reset some default styling */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        background-color: #3498db;
+        color: white;
+        text-align: center;
+        padding: 40px 0;
+      }
+
+      header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      header h2 {
+        font-size: 1.5em;
+      }
+
+      section {
+        padding: 20px;
+      }
+
+      .benefits {
+        background-color: #ecf0f1;
+      }
+
+      .benefits h3 {
+        margin-bottom: 15px;
+      }
+
+      .services {
+        background-color: #d5dbdb;
+      }
+
+      .services h3 {
+        margin-bottom: 10px;
+      }
+
+      .services p {
+        margin-bottom: 5px;
+      }
+
+      .contact-form {
+        background-color: #bdc3c7;
+      }
+
+      .contact-form h3 {
+        margin-bottom: 10px;
+      }
+
+      .contact-form form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 10px;
+        margin-top: 10px;
+      }
+
+      .contact-form input,
+      .contact-form textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      .contact-form button {
+        width: 100%;
+        padding: 10px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+
+      .contact-form button:hover {
+        background-color: #2980b9;
+      }
+
+      footer {
+        text-align: center;
+        padding: 20px 0;
+        background-color: #34495e;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Supercharge Your Wix Site</h1>
+      <h2>Integrate Secure Payment Gateway Services</h2>
+    </header>
+
+    <section class="benefits">
+      <h3>Unlock the potential of your Wix site:</h3>
+      <ul>
+        <li>Boost Sales</li>
+        <li>Ensure Secure Transactions</li>
+        <li>Seamless Integration</li>
+      </ul>
+    </section>
+
+    <section class="services">
+      <h3>Our Services:</h3>
+      <p>Customized integration to match your business needs</p>
+      <p>24/7 support for any assistance</p>
+    </section>
+
+    <section class="contact-form">
+      <h3>Contact Us</h3>
+      <form id="contactForm">
+        <input type="text" id="name" placeholder="Your Name" required />
+        <input type="email" id="email" placeholder="Your Email" required />
+        <input
+          type="url"
+          id="website"
+          placeholder="Your Website URL"
+          required
+        />
+        <textarea
+          id="comments"
+          placeholder="Specific requirements/comments"
+        ></textarea>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <footer>
+      <p>Ready to elevate your Wix website's capabilities?</p>
+    </footer>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        push,
+        set,
+      } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCc5g0rcnJ5XpRqDVqknPlhYtFq3NQuVjg",
+        authDomain: "fisrstclient.firebaseapp.com",
+        databaseURL: "https://fisrstclient.firebaseio.com",
+        projectId: "fisrstclient",
+        storageBucket: "fisrstclient.appspot.com",
+        messagingSenderId: "528626081833",
+        appId: "1:528626081833:web:30575b19c564fbd57cbc38",
+        measurementId: "G-6Q3Q6RZ3HL",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+
+      document
+        .getElementById("contactForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const name = document.getElementById("name").value;
+          const email = document.getElementById("email").value;
+          const website = document.getElementById("website").value;
+          const comments = document.getElementById("comments").value;
+          const date = new Date().toISOString().split("T")[0];
+
+          const formRef = ref(database, "formData");
+          push(formRef).then((newChildRef) => {
+            const newEntryKey = newChildRef.key;
+            const formData = {
+              name: name,
+              email: email,
+              website: website,
+              comments: comments,
+              date: date,
+              status: "",
+            };
+            set(ref(database, `formData/${newEntryKey}`), formData)
+              .then(() => {
+                alert("Form data submitted successfully!");
+              })
+              .catch((error) => {
+                alert("Error submitting form data: " + error);
+              });
+          });
+        });
+    </script>
+  </body>
+</html>
